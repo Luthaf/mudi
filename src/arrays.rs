@@ -19,11 +19,11 @@ impl<S, D> ArrayBase<S, D> where D: Dimensions, S: Storage {
     ///
     /// ```
     /// use mudi::Array;
-    /// // One-dimensional array, with size 4.
+    /// // One-dimensional array, with shape (4).
     /// let array = Array::from_vector(vec![1, 2, 3, 4], 4);
     /// assert_eq!(array[2], 3);
     ///
-    /// // Two-dimensional array, with size (2, 2)
+    /// // Two-dimensional array, with shape (2, 2)
     /// let array = Array::from_vector(vec![1, 2, 3, 4], (2, 2));
     /// assert_eq!(array[(1, 0)], 3);
     /// ```
@@ -43,6 +43,20 @@ impl<S, D> ArrayBase<S, D> where D: Dimensions, S: Storage {
             dims: dims,
         }
     }
+
+    /// Get the shape of the array.
+    ///
+    /// ```
+    /// use mudi::Array;
+    /// let array = Array::from_vector(vec![1, 2, 3, 4], 4);
+    /// assert_eq!(array.shape(), 4);
+    ///
+    /// let array = Array::from_element(vec![1, 2, 3, 4], (2, 7));
+    /// assert_eq!(array.shape(), (2, 7));
+    /// ```
+    pub fn shape(&self) -> D {
+        self.dims.clone()
+    }
 }
 
 impl<S, D> ArrayBase<S, D> where D: Dimensions, S: Storage, S::Item: Clone {
@@ -50,7 +64,7 @@ impl<S, D> ArrayBase<S, D> where D: Dimensions, S: Storage, S::Item: Clone {
     ///
     /// ```
     /// use mudi::Array;
-    /// // Two-dimensional array, with size (2, 6)
+    /// // Two-dimensional array, with shape (2, 6)
     /// let array = Array::from_element(42, (2, 6));
     /// assert_eq!(array[(1, 4)], 42);
     /// ```
@@ -108,5 +122,14 @@ mod tests {
         assert_eq!(a[(3, 4)], 678);
         a[(3, 4)] = 42;
         assert_eq!(a[(3, 4)], 42);
+    }
+
+    #[test]
+    fn shape() {
+        let a = Array::from_element(678, (7, 7));
+        assert_eq!(a.shape(), (7, 7));
+
+        let a = Array::from_element(678, (7, 7..10));
+        assert_eq!(a.shape(), (7, 7..10));
     }
 }
