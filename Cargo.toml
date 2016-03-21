@@ -6,3 +6,8 @@ description = "Multidimensional arrays for storage of data"
 keywords = ["multidimensional", "array", "fortran"]
 
 [dependencies]
+compiletest_rs = {version = "0.1.1", optional = true}
+
+[features]
+default = []
+unstable = ["compiletest_rs"]
