@@ -79,9 +79,7 @@ impl<A, B, C> Dimensions for (A, B, C) where A: Dimensions, B: Dimensions, C: Di
 
     #[inline(always)]
     fn offset(&self, index: Self::Index) -> usize {
-        self.2.size() * self.1.size() * self.0.offset(index.0)
-        + self.1.size() * self.1.offset(index.1)
-        + self.2.offset(index.2)
+        self.2.size() * (self.1.size() * self.0.offset(index.0) + self.1.offset(index.1)) + self.2.offset(index.2)
     }
 
     #[inline(always)]
@@ -191,6 +189,10 @@ mod tests {
             let dim = (2, 6, 6);
             assert_eq!(dim.size(), 72);
             assert_eq!(dim.offset((1, 5, 3)), 69);
+
+            let dim = (1, 2, 3);
+            assert_eq!(dim.size(), 6);
+            assert_eq!(dim.offset((0, 1, 2)), 5);
         }
 
         #[test]
