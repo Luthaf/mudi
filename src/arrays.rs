@@ -119,6 +119,17 @@ impl<S, D, I: Copy> IndexMut<I> for ArrayBase<S, D>
     }
 }
 
+impl<S, D> PartialEq for ArrayBase<S, D>
+    where D: Dimensions, S: Storage, S::Item: PartialEq {
+    fn eq(&self, other: &ArrayBase<S, D>) -> bool {
+        if self.dims != other.dims {
+            false
+        } else {
+            self.data.as_ref() == other.data.as_ref()
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

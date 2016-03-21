@@ -3,7 +3,7 @@ use std::ops::Range;
 /// A (set of) dimensions in an array. A `Dimensions` object carries informations
 /// about its size, and how to convert a multi-dimensional index to a linear
 /// index.
-pub trait Dimensions: Clone {
+pub trait Dimensions: Clone + PartialEq {
     /// The type to use to index this dimension
     type Index: Copy;
     /// Convert an index to a linear offset for this dimension size
