@@ -79,7 +79,7 @@ impl<A, B, C> Dimensions for (A, B, C) where A: Dimensions, B: Dimensions, C: Di
 
     #[inline(always)]
     fn offset(&self, index: Self::Index) -> usize {
-        self.2.size() * (self.1.size() * self.0.offset(index.0) + self.1.offset(index.1)) + self.2.offset(index.2)
+        self.2.offset(index.2) + self.2.size() * (self.1.offset(index.1) + self.1.size() * self.0.offset(index.0))
     }
 
     #[inline(always)]
@@ -162,16 +162,20 @@ mod tests {
         use super::*;
         #[test]
         fn offset() {
-            let dim = (8, 6);
-            assert_eq!(dim.size(), 48);
-            assert_eq!(dim.offset((3, 5)), 23);
+            let dim = (2, 3);
+            assert_eq!(dim.size(), 6);
+
+            assert_eq!(dim.offset((0, 1)), 1);
+            assert_eq!(dim.offset((1, 0)), 3);
+
+            assert_eq!(dim.offset((1, 2)), 5);
         }
 
         #[test]
         #[should_panic]
         fn bigger_than_dim_one() {
             let dim = (8, 6);
-            dim.offset((9, 4));
+            dim.offset((8, 4));
         }
 
         #[test]
@@ -186,13 +190,14 @@ mod tests {
         use super::*;
         #[test]
         fn offset() {
-            let dim = (2, 6, 6);
-            assert_eq!(dim.size(), 72);
-            assert_eq!(dim.offset((1, 5, 3)), 69);
+            let dim = (2, 2, 5);
+            assert_eq!(dim.size(), 20);
 
-            let dim = (1, 2, 3);
-            assert_eq!(dim.size(), 6);
-            assert_eq!(dim.offset((0, 1, 2)), 5);
+            assert_eq!(dim.offset((0, 0, 1)), 1);
+            assert_eq!(dim.offset((0, 1, 0)), 5);
+            assert_eq!(dim.offset((1, 0, 0)), 10);
+
+            assert_eq!(dim.offset((1, 1, 4)), 19);
         }
 
         #[test]
