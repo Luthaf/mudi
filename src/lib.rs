@@ -51,3 +51,6 @@ pub use storage::Storage;
 
 mod arrays;
 pub use arrays::{Array, ArrayBase};
+
+#[macro_use]
+mod macros;
