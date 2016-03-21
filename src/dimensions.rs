@@ -18,7 +18,7 @@ impl Dimensions for usize {
 
     #[inline(always)]
     fn offset(&self, index: usize) -> usize {
-        assert!(index < *self);
+        assert!(index < *self, "index out of bound: len is {} but index is {}", self, index);
         index
     }
 
@@ -33,7 +33,9 @@ impl Dimensions for Range<usize> {
 
     #[inline(always)]
     fn offset(&self, index: usize) -> usize {
-        assert!(self.start <= index && index < self.end);
+        assert!(self.start <= index && index < self.end,
+                "index out of bound: range is ({}..{}) but index is {}",
+                self.start, self.end, index);
         index - self.start
     }
 
@@ -48,8 +50,9 @@ impl Dimensions for Range<i32> {
 
     #[inline(always)]
     fn offset(&self, index: i32) -> usize {
-        assert!(self.start <= index && index < self.end);
-        assert!(index - self.start > 0);
+        assert!(self.start <= index && index < self.end,
+                "index out of bound: range is ({}..{}) but index is {}",
+                self.start, self.end, index);
         (index - self.start) as usize
     }
 
