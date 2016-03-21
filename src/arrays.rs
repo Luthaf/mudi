@@ -7,7 +7,7 @@ use Storage;
 pub type Array<T, D> = ArrayBase<Box<[T]>, D>;
 
 #[derive(Debug)]
-/// ArrayBase implement all the operations on arrays, using a `Storage` and
+/// ArrayBase implements all the operations on arrays, using a `Storage` and
 /// some `Dimensions`.
 pub struct ArrayBase<S, D> where D: Dimensions, S: Storage {
     data: S,

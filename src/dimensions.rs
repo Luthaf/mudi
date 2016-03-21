@@ -1,7 +1,7 @@
 use std::ops::Range;
 
-/// A (set of) dimensions in an array. A `Dimensions` object carry informations
-/// about it size, and how to convert a multi-dimensional index to a linear
+/// A (set of) dimensions in an array. A `Dimensions` object carries informations
+/// about its size, and how to convert a multi-dimensional index to a linear
 /// index.
 pub trait Dimensions: Clone {
     /// The type to use to index this dimension
