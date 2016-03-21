@@ -1,4 +1,5 @@
 use std::ops::{Index, IndexMut};
+use std::slice::{Iter, IterMut};
 
 use Dimensions;
 use Storage;
@@ -56,6 +57,32 @@ impl<S, D> ArrayBase<S, D> where D: Dimensions, S: Storage {
     /// ```
     pub fn shape(&self) -> D {
         self.dims.clone()
+    }
+
+    /// Flat (linear) iteration over array elements.
+    ///
+    /// ```
+    /// use mudi::Array;
+    /// let mut array = Array::from_element(0, (3, 2));
+    /// for i in 0..3 {
+    ///     for j in 0..2 {
+    ///         array[(i, j)] = i;
+    ///     }
+    /// }
+    ///
+    /// for value in array.flat_iter() {
+    ///     print!("{} ", value);
+    /// }
+    /// // This will print "0 0 1 1 2 2"
+    /// ```
+    pub fn flat_iter(&self) -> Iter<S::Item> {
+        self.data.as_ref().iter()
+    }
+
+    /// Flat (linear) iteration over mutable array elements. See the
+    /// documentation for [`Array::flat_iter`](#method.flat_iter).
+    pub fn flat_iter_mut(&mut self) -> IterMut<S::Item> {
+        self.data.as_mut().iter_mut()
     }
 }
 
