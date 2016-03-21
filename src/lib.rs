@@ -1,4 +1,14 @@
 #![warn(missing_docs)]
+#![cfg_attr(feature="lint", feature(plugin))]
+#![cfg_attr(feature="lint", plugin(clippy))]
+#![cfg_attr(feature="lint", warn(clippy))]
+// Additional lints from the Allow group in clippy
+#![cfg_attr(feature="lint", warn(
+    enum_glob_use, mut_mut, option_unwrap_used, print_stdout,
+    result_unwrap_used, single_match_else, wrong_pub_self_convention
+))]
+
+#![cfg_attr(feature="lint", allow(inline_always))]
 
 //! `mudi` is a multi-dimensional array library.
 //!
