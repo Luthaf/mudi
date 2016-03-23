@@ -1,5 +1,8 @@
 # Mudi: Rust multi-dimensional arrays
 
+[![Build Status](https://travis-ci.org/Luthaf/mudi.svg?branch=master)](https://travis-ci.org/Luthaf/mudi)
+[![Code Coverage](https://codecov.io/github/Luthaf/mudi/coverage.svg?branch=master)](https://codecov.io/github/Luthaf/mudi?branch=master)
+
 Mudi provides multi-dimensional arrays to store data. The aim of this
 library is not to provide complex algorithms, but powerful indexing scheme.
 The Mudi array type is closer to a Fortran array than to Numpy's `ndarray`.
