@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["Storage","Storage of data from an array"]]});

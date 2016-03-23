@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ArrayBase","ArrayBase implements all the operations on arrays, using a `Storage` and some `Dimensions`."]],"type":[["Array","An array with owned storage."]]});

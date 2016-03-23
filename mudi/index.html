@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `mudi` crate.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, mudi">
+
+    <title>mudi - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'></p><script>window.sidebarCurrent = {name: 'mudi', ty: 'mod', relpath: '../'};</script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content mod">
+<h1 class='fqn'><span class='in-band'>Crate <a class='mod' href=''>mudi</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-0' class='srclink' href='../src/mudi/lib.rs.html#1-77' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p><code>mudi</code> provides Fortran-like multi-dimensional arrays to Rust.</p>
+
+<p><code>mudi</code> provides multi-dimensional arrays to store data. The aim of this
+library is not to provide complex algorithms, but powerful indexing scheme.
+The <code>mudi</code> array type is closer to a Fortran array than to Numpy&#39;s <code>ndarray</code>.</p>
+
+<p>For example, <code>mudi</code> allow to use range dimensions (<code>10..30</code> or even
+<code>-42..42</code>) and negative indexing for negatives ranges.</p>
+
+<p>The basic type is <code>Array</code>, which provides an owned array for any kind of
+data. The size of the array is fixed at initial construction.</p>
+
+<h1 id='creating-arrays' class='section-header'><a href='#creating-arrays'>Creating arrays</a></h1>
+<p>The <code>array!</code> macro can be used to create an array. It is used like the
+standard <code>vec!</code> macro, but with an addition dimensions parameter.</p>
+<pre class='rust rust-example-rendered'>
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>mudi</span>;
+
+<span class='comment'>// Create a 3-dimensional array, filled with 0</span>
+<span class='kw'>let</span> <span class='ident'>a</span> <span class='op'>=</span> <span class='macro'>array</span><span class='macro'>!</span>(<span class='number'>0.0</span>; (<span class='number'>3</span>, <span class='number'>4</span>, <span class='op'>-</span><span class='number'>10</span>..<span class='number'>10</span>));
+
+<span class='comment'>// Create a 2-dimensional array, with values from the list</span>
+<span class='kw'>let</span> <span class='ident'>a</span> <span class='op'>=</span> <span class='macro'>array</span><span class='macro'>!</span>(<span class='number'>1.0</span>, <span class='number'>0.0</span>, <span class='number'>0.0</span>, <span class='number'>0.0</span>,
+               <span class='number'>0.0</span>, <span class='number'>2.0</span>, <span class='number'>1.0</span>, <span class='number'>0.0</span>,
+               <span class='number'>0.0</span>, <span class='number'>0.0</span>, <span class='number'>3.0</span>, <span class='number'>0.0</span>,
+               <span class='number'>0.0</span>, <span class='number'>0.0</span>, <span class='number'>0.0</span>, <span class='number'>4.0</span>; (<span class='number'>4</span>, <span class='number'>4</span>));</pre>
+
+<h1 id='dimensions-and-indexing' class='section-header'><a href='#dimensions-and-indexing'>Dimensions and indexing</a></h1>
+<p>Dimensions are represented by tuples of either single <code>usize</code> value, or
+ranges. <code>3</code> and <code>10..30</code> are dimensions for 1-dimensional arrays, and
+<code>(3, 4, 5)</code> or <code>(-20..20, 5, 6..8)</code> are dimensions for 3-dimensional arrays.
+Indexing is implemented for tuple dimensions up to 7-dimensional arrays.</p>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>a</span> <span class='op'>=</span> <span class='macro'>array</span><span class='macro'>!</span>(<span class='number'>0.0</span>; (<span class='number'>3</span>, <span class='number'>4</span>, <span class='op'>-</span><span class='number'>10</span>..<span class='number'>10</span>));
+
+<span class='comment'>// Use tuples for indexing</span>
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>a</span>[(<span class='number'>0</span>, <span class='number'>0</span>, <span class='number'>0</span>)], <span class='number'>0.0</span>);
+<span class='comment'>// Negatives indexes in negative range dimensions</span>
+<span class='ident'>a</span>[(<span class='number'>1</span>, <span class='number'>2</span>, <span class='op'>-</span><span class='number'>6</span>)] <span class='op'>=</span> <span class='number'>42.0</span>;
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>a</span>[(<span class='number'>1</span>, <span class='number'>2</span>, <span class='op'>-</span><span class='number'>6</span>)], <span class='number'>42.0</span>);</pre>
+</div><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='macro' href='macro.array!.html'
+                               title='mudi::array!'>array!</a></td>
+                        <td class='docblock short'>
+                             <p>Creates an Array containing the arguments, like the <code>vec!</code> macro.</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='struct' href='struct.ArrayBase.html'
+                               title='mudi::ArrayBase'>ArrayBase</a></td>
+                        <td class='docblock short'>
+                             <p>ArrayBase implements all the operations on arrays, using a <code>Storage</code> and
+some <code>Dimensions</code>.</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='traits' class='section-header'><a href="#traits">Traits</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='trait' href='trait.Dimensions.html'
+                               title='mudi::Dimensions'>Dimensions</a></td>
+                        <td class='docblock short'>
+                             <p>A (set of) dimensions in an array. <code>Dimensions</code> objects carry informations
+about there size, and how to convert a multi-dimensional index to a linear
+offset.</p>
+
+                        </td>
+                    </tr>
+                
+                    <tr class=' module-item'>
+                        <td><a class='trait' href='trait.Storage.html'
+                               title='mudi::Storage'>Storage</a></td>
+                        <td class='docblock short'>
+                             <p>Storage of data from an array</p>
+
+                        </td>
+                    </tr>
+                </table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
+<table>
+                    <tr class=' module-item'>
+                        <td><a class='type' href='type.Array.html'
+                               title='mudi::Array'>Array</a></td>
+                        <td class='docblock short'>
+                             <p>An array with owned storage.</p>
+
+                        </td>
+                    </tr>
+                </table></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "mudi";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

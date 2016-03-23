@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ArrayBase` struct in crate `mudi`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ArrayBase">
+
+    <title>mudi::ArrayBase - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>mudi</a></p><script>window.sidebarCurrent = {name: 'ArrayBase', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>mudi</a>::<wbr><a class='struct' href=''>ArrayBase</a></span><span class='out-of-band'><span id='render-detail'>
+            <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                [<span class='inner'>&#x2212;</span>]
+            </a>
+        </span><a id='src-148' class='srclink' href='../src/mudi/arrays.rs.html#13-16' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct ArrayBase&lt;S, D&gt; <span class='where'>where D: <a class='trait' href='../mudi/trait.Dimensions.html' title='mudi::Dimensions'>Dimensions</a>, S: <a class='trait' href='../mudi/trait.Storage.html' title='mudi::Storage'>Storage</a></span> {
+    // some fields omitted
+}</pre><div class='docblock'><p>ArrayBase implements all the operations on arrays, using a <code>Storage</code> and
+some <code>Dimensions</code>.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl&lt;S, D&gt; <a class='struct' href='../mudi/struct.ArrayBase.html' title='mudi::ArrayBase'>ArrayBase</a>&lt;S, D&gt; <span class='where'>where D: <a class='trait' href='../mudi/trait.Dimensions.html' title='mudi::Dimensions'>Dimensions</a>, S: <a class='trait' href='../mudi/trait.Storage.html' title='mudi::Storage'>Storage</a></span></code></h3><div class='impl-items'><h4 id='method.from_vector' class='method'><code>fn <a href='#method.from_vector' class='fnname'>from_vector</a>(vec: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;S::Item&gt;, dims: D) -&gt; <a class='struct' href='../mudi/struct.ArrayBase.html' title='mudi::ArrayBase'>ArrayBase</a>&lt;S, D&gt;</code></h4>
+<div class='docblock'><p>Create a new array using content from the vector.</p>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>mudi</span>::<span class='ident'>Array</span>;
+<span class='comment'>// One-dimensional array, with shape (4).</span>
+<span class='kw'>let</span> <span class='ident'>array</span> <span class='op'>=</span> <span class='ident'>Array</span>::<span class='ident'>from_vector</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>], <span class='number'>4</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>array</span>[<span class='number'>2</span>], <span class='number'>3</span>);
+
+<span class='comment'>// Two-dimensional array, with shape (2, 2)</span>
+<span class='kw'>let</span> <span class='ident'>array</span> <span class='op'>=</span> <span class='ident'>Array</span>::<span class='ident'>from_vector</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>], (<span class='number'>2</span>, <span class='number'>2</span>));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>array</span>[(<span class='number'>1</span>, <span class='number'>0</span>)], <span class='number'>3</span>);</pre>
+
+<h1 id='panics' class='section-header'><a href='#panics'>Panics</a></h1>
+<p>If the size of the vector does not match the size of the dimensions.</p>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>mudi</span>::<span class='ident'>Array</span>;
+<span class='comment'>// The dimension size is 14 here, and the array only contains 4 elements</span>
+<span class='kw'>let</span> <span class='ident'>array</span> <span class='op'>=</span> <span class='ident'>Array</span>::<span class='ident'>from_vector</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>], (<span class='number'>2</span>, <span class='number'>7</span>));</pre>
+</div><h4 id='method.shape' class='method'><code>fn <a href='#method.shape' class='fnname'>shape</a>(&amp;self) -&gt; D</code></h4>
+<div class='docblock'><p>Get the shape of the array.</p>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>mudi</span>::<span class='ident'>Array</span>;
+<span class='kw'>let</span> <span class='ident'>array</span> <span class='op'>=</span> <span class='ident'>Array</span>::<span class='ident'>from_vector</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>], <span class='number'>4</span>);
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>array</span>.<span class='ident'>shape</span>(), <span class='number'>4</span>);
+
+<span class='kw'>let</span> <span class='ident'>array</span> <span class='op'>=</span> <span class='ident'>Array</span>::<span class='ident'>from_element</span>(<span class='macro'>vec</span><span class='macro'>!</span>[<span class='number'>1</span>, <span class='number'>2</span>, <span class='number'>3</span>, <span class='number'>4</span>], (<span class='number'>2</span>, <span class='number'>7</span>));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>array</span>.<span class='ident'>shape</span>(), (<span class='number'>2</span>, <span class='number'>7</span>));</pre>
+</div><h4 id='method.flat_iter' class='method'><code>fn <a href='#method.flat_iter' class='fnname'>flat_iter</a>(&amp;self) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/core/slice/struct.Iter.html' title='core::slice::Iter'>Iter</a>&lt;S::Item&gt;</code></h4>
+<div class='docblock'><p>Flat (linear) iteration over array elements.</p>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>mudi</span>::<span class='ident'>Array</span>;
+<span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>array</span> <span class='op'>=</span> <span class='ident'>Array</span>::<span class='ident'>from_element</span>(<span class='number'>0</span>, (<span class='number'>3</span>, <span class='number'>2</span>));
+<span class='kw'>for</span> <span class='ident'>i</span> <span class='kw'>in</span> <span class='number'>0</span>..<span class='number'>3</span> {
+    <span class='kw'>for</span> <span class='ident'>j</span> <span class='kw'>in</span> <span class='number'>0</span>..<span class='number'>2</span> {
+        <span class='ident'>array</span>[(<span class='ident'>i</span>, <span class='ident'>j</span>)] <span class='op'>=</span> <span class='ident'>i</span>;
+    }
+}
+
+<span class='kw'>for</span> <span class='ident'>value</span> <span class='kw'>in</span> <span class='ident'>array</span>.<span class='ident'>flat_iter</span>() {
+    <span class='macro'>print</span><span class='macro'>!</span>(<span class='string'>&quot;{} &quot;</span>, <span class='ident'>value</span>);
+}
+<span class='comment'>// This will print &quot;0 0 1 1 2 2&quot;</span></pre>
+</div><h4 id='method.flat_iter_mut' class='method'><code>fn <a href='#method.flat_iter_mut' class='fnname'>flat_iter_mut</a>(&amp;mut self) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/core/slice/struct.IterMut.html' title='core::slice::IterMut'>IterMut</a>&lt;S::Item&gt;</code></h4>
+<div class='docblock'><p>Flat (linear) iteration over mutable array elements. See the
+documentation for <a href="#method.flat_iter"><code>Array::flat_iter</code></a>.</p>
+</div></div><h3 class='impl'><code>impl&lt;S, D&gt; <a class='struct' href='../mudi/struct.ArrayBase.html' title='mudi::ArrayBase'>ArrayBase</a>&lt;S, D&gt; <span class='where'>where D: <a class='trait' href='../mudi/trait.Dimensions.html' title='mudi::Dimensions'>Dimensions</a>, S: <a class='trait' href='../mudi/trait.Storage.html' title='mudi::Storage'>Storage</a>, S::Item: <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a></span></code></h3><div class='impl-items'><h4 id='method.from_element' class='method'><code>fn <a href='#method.from_element' class='fnname'>from_element</a>(element: S::Item, dims: D) -&gt; <a class='struct' href='../mudi/struct.ArrayBase.html' title='mudi::ArrayBase'>ArrayBase</a>&lt;S, D&gt;</code></h4>
+<div class='docblock'><p>Create a new array by cloning a specific element as needed.</p>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>mudi</span>::<span class='ident'>Array</span>;
+<span class='comment'>// Two-dimensional array, with shape (2, 6)</span>
+<span class='kw'>let</span> <span class='ident'>array</span> <span class='op'>=</span> <span class='ident'>Array</span>::<span class='ident'>from_element</span>(<span class='number'>42</span>, (<span class='number'>2</span>, <span class='number'>6</span>));
+<span class='macro'>assert_eq</span><span class='macro'>!</span>(<span class='ident'>array</span>[(<span class='number'>1</span>, <span class='number'>4</span>)], <span class='number'>42</span>);</pre>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl&lt;S, D, I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Index.html' title='core::ops::Index'>Index</a>&lt;I&gt; for <a class='struct' href='../mudi/struct.ArrayBase.html' title='mudi::ArrayBase'>ArrayBase</a>&lt;S, D&gt; <span class='where'>where D: <a class='trait' href='../mudi/trait.Dimensions.html' title='mudi::Dimensions'>Dimensions</a>&lt;Index=I&gt;, S: <a class='trait' href='../mudi/trait.Storage.html' title='mudi::Storage'>Storage</a></span></code></h3><div class='impl-items'><h4 id='assoc_type.Output' class='type'><code>type Output = S::Item</code></h4>
+<h4 id='method.index' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Index.html#method.index' class='fnname'>index</a>(&amp;self, index: I) -&gt; &amp;S::Item</code></h4>
+</div><h3 class='impl'><code>impl&lt;S, D, I: <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.IndexMut.html' title='core::ops::IndexMut'>IndexMut</a>&lt;I&gt; for <a class='struct' href='../mudi/struct.ArrayBase.html' title='mudi::ArrayBase'>ArrayBase</a>&lt;S, D&gt; <span class='where'>where D: <a class='trait' href='../mudi/trait.Dimensions.html' title='mudi::Dimensions'>Dimensions</a>&lt;Index=I&gt;, S: <a class='trait' href='../mudi/trait.Storage.html' title='mudi::Storage'>Storage</a></span></code></h3><div class='impl-items'><h4 id='method.index_mut' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.IndexMut.html#method.index_mut' class='fnname'>index_mut</a>(&amp;mut self, index: I) -&gt; &amp;mut S::Item</code></h4>
+</div><h3 class='impl'><code>impl&lt;S, D&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a> for <a class='struct' href='../mudi/struct.ArrayBase.html' title='mudi::ArrayBase'>ArrayBase</a>&lt;S, D&gt; <span class='where'>where D: <a class='trait' href='../mudi/trait.Dimensions.html' title='mudi::Dimensions'>Dimensions</a>, S: <a class='trait' href='../mudi/trait.Storage.html' title='mudi::Storage'>Storage</a>, S::Item: <a class='trait' href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html' title='core::cmp::PartialEq'>PartialEq</a></span></code></h3><div class='impl-items'><h4 id='method.eq' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.eq' class='fnname'>eq</a>(&amp;self, other: &amp;<a class='struct' href='../mudi/struct.ArrayBase.html' title='mudi::ArrayBase'>ArrayBase</a>&lt;S, D&gt;) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+<h4 id='method.ne' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html#method.ne' class='fnname'>ne</a>(&amp;self, other: &amp;Rhs) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.bool.html'>bool</a></code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl&lt;S: <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a>, D: <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a>&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../mudi/struct.ArrayBase.html' title='mudi::ArrayBase'>ArrayBase</a>&lt;S, D&gt; <span class='where'>where D: <a class='trait' href='../mudi/trait.Dimensions.html' title='mudi::Dimensions'>Dimensions</a>, S: <a class='trait' href='../mudi/trait.Storage.html' title='mudi::Storage'>Storage</a></span></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#method.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "mudi";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

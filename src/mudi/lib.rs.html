@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="Source to the Rust file `src/lib.rs`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang">
+
+    <title>lib.rs.html -- source</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content source"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+</pre><pre class='rust '>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>warn</span>(<span class='ident'>missing_docs</span>)]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;lint&quot;</span>, <span class='ident'>feature</span>(<span class='ident'>plugin</span>))]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;lint&quot;</span>, <span class='ident'>plugin</span>(<span class='ident'>clippy</span>))]</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;lint&quot;</span>, <span class='ident'>warn</span>(<span class='ident'>clippy</span>))]</span>
+<span class='comment'>// Additional lints from the Allow group in clippy</span>
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;lint&quot;</span>, <span class='ident'>warn</span>(
+    <span class='ident'>enum_glob_use</span>, <span class='ident'>mut_mut</span>, <span class='ident'>option_unwrap_used</span>, <span class='ident'>print_stdout</span>,
+    <span class='ident'>result_unwrap_used</span>, <span class='ident'>single_match_else</span>, <span class='ident'>wrong_pub_self_convention</span>
+))]</span>
+
+<span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span><span class='op'>=</span><span class='string'>&quot;lint&quot;</span>, <span class='ident'>allow</span>(<span class='ident'>inline_always</span>))]</span>
+
+<span class='doccomment'>//! `mudi` provides Fortran-like multi-dimensional arrays to Rust.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! `mudi` provides multi-dimensional arrays to store data. The aim of this</span>
+<span class='doccomment'>//! library is not to provide complex algorithms, but powerful indexing scheme.</span>
+<span class='doccomment'>//! The `mudi` array type is closer to a Fortran array than to Numpy&#39;s `ndarray`.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! For example, `mudi` allow to use range dimensions (`10..30` or even</span>
+<span class='doccomment'>//! `-42..42`) and negative indexing for negatives ranges.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! The basic type is `Array`, which provides an owned array for any kind of</span>
+<span class='doccomment'>//! data. The size of the array is fixed at initial construction.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! # Creating arrays</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! The `array!` macro can be used to create an array. It is used like the</span>
+<span class='doccomment'>//! standard `vec!` macro, but with an addition dimensions parameter.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! ```</span>
+<span class='doccomment'>//! #[macro_use]</span>
+<span class='doccomment'>//! extern crate mudi;</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! # fn main() {</span>
+<span class='doccomment'>//! // Create a 3-dimensional array, filled with 0</span>
+<span class='doccomment'>//! let a = array!(0.0; (3, 4, -10..10));</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! // Create a 2-dimensional array, with values from the list</span>
+<span class='doccomment'>//! let a = array!(1.0, 0.0, 0.0, 0.0,</span>
+<span class='doccomment'>//!                0.0, 2.0, 1.0, 0.0,</span>
+<span class='doccomment'>//!                0.0, 0.0, 3.0, 0.0,</span>
+<span class='doccomment'>//!                0.0, 0.0, 0.0, 4.0; (4, 4));</span>
+<span class='doccomment'>//! # }</span>
+<span class='doccomment'>//! ```</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! # Dimensions and indexing</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Dimensions are represented by tuples of either single `usize` value, or</span>
+<span class='doccomment'>//! ranges. `3` and `10..30` are dimensions for 1-dimensional arrays, and</span>
+<span class='doccomment'>//! `(3, 4, 5)` or `(-20..20, 5, 6..8)` are dimensions for 3-dimensional arrays.</span>
+<span class='doccomment'>//! Indexing is implemented for tuple dimensions up to 7-dimensional arrays.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! ```</span>
+<span class='doccomment'>//! # #[macro_use]</span>
+<span class='doccomment'>//! # extern crate mudi;</span>
+<span class='doccomment'>//! # fn main() {</span>
+<span class='doccomment'>//! let mut a = array!(0.0; (3, 4, -10..10));</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! // Use tuples for indexing</span>
+<span class='doccomment'>//! assert_eq!(a[(0, 0, 0)], 0.0);</span>
+<span class='doccomment'>//! // Negatives indexes in negative range dimensions</span>
+<span class='doccomment'>//! a[(1, 2, -6)] = 42.0;</span>
+<span class='doccomment'>//! assert_eq!(a[(1, 2, -6)], 42.0);</span>
+<span class='doccomment'>//! # }</span>
+<span class='doccomment'>//! ```</span>
+
+<span class='kw'>mod</span> <span class='ident'>dimensions</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>dimensions</span>::<span class='ident'>Dimensions</span>;
+
+<span class='kw'>mod</span> <span class='ident'>storage</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>storage</span>::<span class='ident'>Storage</span>;
+
+<span class='kw'>mod</span> <span class='ident'>arrays</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='ident'>arrays</span>::{<span class='ident'>Array</span>, <span class='ident'>ArrayBase</span>};
+
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
+<span class='kw'>mod</span> <span class='ident'>macros</span>;
+</pre>
+</section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "mudi";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

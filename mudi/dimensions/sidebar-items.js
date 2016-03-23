@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["Dimensions","A (set of) dimensions in an array. `Dimensions` objects carry informations about there size, and how to convert a multi-dimensional index to a linear offset."]]});
