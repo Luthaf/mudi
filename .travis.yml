@@ -11,7 +11,7 @@ rust:
     - beta
     - nightly
 install:
-    - pip install --user codecov
+    - pip install --user codecov travis-cargo
     - export PATH=$HOME/.local/bin:HOME/local/bin:$PATH
 script:
     - cargo build
@@ -41,6 +41,11 @@ after_success:
           kcov --include-pattern=$(pwd) target/kcov target/debug/mudi-*
           codecov --file target/kcov/mudi-*/cobertura.xml
       fi
+    - travis-cargo --only stable doc
+    - travis-cargo --only stable doc-upload
 cache:
   directories:
       - $HOME/local
+env:
+  global:
+    secure: kHOi2qxVEdvXuPsGgH5r3UURoWIvV037zfpwp4IVQiRSk4uFMmt65kDDgpqQB/HA0Vw3Itf7RBKj/eBqUX1sDBnfn1/Lk2P/VGCHm1rrbrjrnMqm8GtwnHLJfFkzxO8ewej50bEYLgob725z6YRq1F9twsm+HAyazk270SbHBKu8s+Qmkuf0S77Lr62frB9JRaIq63SGFpEoM/Bk1kn0dxJx5NYY4EzvoYVzcPA9uWxpSnvEzmHdDqkW4C1sF2bb0JuBprvY64QR0YTmSykp7ClSdeqdBKbNJ+cnoVlndkh/R34KairQFEbypvFgWS8sQbf4vBQifndHAX4RiXvYHcgm9nQnoTY+AKtBo67rjP+v2O6i/ZvzauE2GPoFuh2L+ZAcUeaGYieOCVEcG9eVPfSWez7TFHPBD3/q0tpdaZA9LY3lRiUG75jTDelPwQAsGur1EkgL8aejqp0ZTmI0NgfYauCvrnTMSy4hCN+pFfQMnoYNj/93vXHMYxHjelWoDOvsN0wunXaMTRQi9hXZJZuDoJ6XYpd2bD8F9Muwe6TMPV0Jj4Iq703pZzatumwO3v3aRiPeKp0X+ieYQ0w0PF4MaULIXpbQAbRtdL/T4qxMCt7/5VIqGbTvztqidepQLhBnF083lyqx1rhyDx9voNVV8FA7vDlRfPE0A+TuHTs=
