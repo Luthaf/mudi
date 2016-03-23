@@ -10,38 +10,59 @@
 
 #![cfg_attr(feature="lint", allow(inline_always))]
 
-//! `mudi` is a multi-dimensional array library.
+//! `mudi` provides Fortran-like multi-dimensional arrays to Rust.
 //!
-//! `mudi` provides multi-dimensional arrays to stora data.
-//! The aim of this library is not to provide complex algorithms, but a
-//! powerful indexing scheme and iterators.
-//! For example, with `mudi` it is possible to use range dimensions
-//! (`-42..42`) and the corresponding negative indexing (`array[-23]`).
+//! `mudi` provides multi-dimensional arrays to store data. The aim of this
+//! library is not to provide complex algorithms, but powerful indexing scheme.
+//! The `mudi` array type is closer to a Fortran array than to Numpy's `ndarray`.
 //!
-//! The `mudi` array type is closer to a Fortran array than to Numpy's
-//! `ndarray`. The fact that negative indexing is supported means that python
-//! style *indexing from the end* will not be supported.
-//! If the dimension does not contain a negative range then negative indexing
-//! is not permitted:
-//!
-//! ```
-//! use mudi::Array;
-//! let array = Array::from_element(0.0, (2, 6));
-//! // This fails to compile
-//! // array[(1, -1)];
-//! ```
-//!
-//! If the dimensions contain a negative range, negative indexing
-//! will yield the corresponding value
-//!
-//! ```
-//! use mudi::Array;
-//! let array = Array::from_element(0.0, (-42..42));
-//! assert_eq!(array[-12], 0.0);
-//! ```
+//! For example, `mudi` allow to use range dimensions (`10..30` or even
+//! `-42..42`) and negative indexing for negatives ranges.
 //!
 //! The basic type is `Array`, which provides an owned array for any kind of
 //! data. The size of the array is fixed at initial construction.
+//!
+//! # Creating arrays
+//!
+//! The `array!` macro can be used to create an array. It is used like the
+//! standard `vec!` macro, but with an addition dimensions parameter.
+//!
+//! ```
+//! #[macro_use]
+//! extern crate mudi;
+//!
+//! # fn main() {
+//! // Create a 3-dimensional array, filled with 0
+//! let a = array!(0.0; (3, 4, -10..10));
+//!
+//! // Create a 2-dimensional array, with values from the list
+//! let a = array!(1.0, 0.0, 0.0, 0.0,
+//!                0.0, 2.0, 1.0, 0.0,
+//!                0.0, 0.0, 3.0, 0.0,
+//!                0.0, 0.0, 0.0, 4.0; (4, 4));
+//! # }
+//! ```
+//!
+//! # Dimensions and indexing
+//!
+//! Dimensions are represented by tuples of either single `usize` value, or
+//! ranges. `3` and `10..30` are dimensions for 1-dimensional arrays, and
+//! `(3, 4, 5)` or `(-20..20, 5, 6..8)` are dimensions for 3-dimensional arrays.
+//! Indexing is implemented for tuple dimensions up to 7-dimensional arrays.
+//!
+//! ```
+//! # #[macro_use]
+//! # extern crate mudi;
+//! # fn main() {
+//! let mut a = array!(0.0; (3, 4, -10..10));
+//!
+//! // Use tuples for indexing
+//! assert_eq!(a[(0, 0, 0)], 0.0);
+//! // Negatives indexes in negative range dimensions
+//! a[(1, 2, -6)] = 42.0;
+//! assert_eq!(a[(1, 2, -6)], 42.0);
+//! # }
+//! ```
 
 mod dimensions;
 pub use dimensions::Dimensions;
